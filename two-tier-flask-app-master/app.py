@@ -16,7 +16,7 @@ mysql = MySQL(app)
 @app.route('/')
 def hello():
     cur = mysql.connection.cursor()
-    cur.execute('SELECT message FROM messages')
+    cur.execute('SELECT message_content, sender_name FROM messages')
     messages = cur.fetchall()
     cur.close()
     return render_template('index.html', messages=messages)
@@ -24,12 +24,12 @@ def hello():
 @app.route('/submit', methods=['POST'])
 def submit():
     new_message = request.form.get('new_message')
+    sender_name = request.form.get('sender_name')  # Assuming you have a form field for sender's name
     cur = mysql.connection.cursor()
-    cur.execute('INSERT INTO messages (message) VALUES (%s)', [new_message])
+    cur.execute('INSERT INTO messages (message_content, sender_name) VALUES (%s, %s)', (new_message, sender_name))
     mysql.connection.commit()
     cur.close()
     return redirect(url_for('hello'))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-

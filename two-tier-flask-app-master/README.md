@@ -58,9 +58,11 @@ Before you begin, make sure you have the following installed:
    
      ```sql
      CREATE TABLE messages (
-         id INT AUTO_INCREMENT PRIMARY KEY,
-         message TEXT
-     );
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sender_name VARCHAR(255),
+    message_content TEXT
+);
+
      ```
 
 4. Interact with the app:

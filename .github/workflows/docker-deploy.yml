@@ -24,8 +24,8 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t myusername/myapp:latest -f two-tier-flask-app-master/Dockerfile two-tier-flask-app-master/
-          docker push myusername/myapp:latest
+          docker build -t rohitutekar123/myapp:latest -f two-tier-flask-app-master/Dockerfile two-tier-flask-app-master/
+          docker push rohitutekar123/myapp:latest
 
       - name: Deploy to Server
         run: |

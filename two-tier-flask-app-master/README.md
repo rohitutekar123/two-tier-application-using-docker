@@ -4,129 +4,64 @@ This is a simple Flask app that interacts with a MySQL database. The app allows 
 
 ## Prerequisites
 
-Before you begin, make sure you have the following installed:
+efore you begin, make sure you have the following installed:
 
-- Docker
-- Git (optional, for cloning the repository)
+Docker & Docker Compose
+
+Git (optional, for cloning the repository)
+
+A remote or local server for deployment
 
 ## Setup
 
-1. Clone this repository (if you haven't already)
+1️⃣ Clone the Repository
 
-   ```bash
-   git clone https://github.com/your-username/your-repo-name.git
-   ```
+2️⃣ Create a .env file for Secure Variables
 
-2. Navigate to the project directory:
+touch .env
 
-   ```bash
-   cd your-repo-name
-   ```
+Open .env and add:
 
-3. Create a `.env` file in the project directory to store your MySQL environment variables:
+MYSQL_HOST={}
+MYSQL_USER={}
+MYSQL_PASSWORD={}
+MYSQL_DB={}
 
-   ```bash
-   touch .env
-   ```
+3️⃣ Build & Run the Application with Docker Compose
 
-4. Open the `.env` file and add your MySQL configuration:
+docker-compose up --build -d
 
-   ```
-   MYSQL_HOST=mysql
-   MYSQL_USER=your_username
-   MYSQL_PASSWORD=your_password
-   MYSQL_DB=your_database
-   ```
+The app should be running at:
+
+Frontend: http://localhost
+
+Backend: http://localhost:5000
+
+4️⃣ Initialize MySQL Database
+
+Connect to MySQL and create a table:
 
 ## Usage
 
-1. Start the containers using Docker Compose:
+1️⃣ Build the Flask Application Docker Image
+2️⃣ Create a Docker Network
+3️⃣ Run the MySQL Container
+4️⃣ Run the Flask Application Container
 
-   ```bash
-   docker-compose up --build
-   ```
+🔹 CI/CD Pipeline using GitHub Actions
 
-2. Access the Flask app in your web browser:
+1️⃣ Store Secrets in GitHub
 
-   - Frontend: http://localhost
-   - Backend: http://localhost:5000
+Go to GitHub → Repo Settings → Secrets → Actions, and add:
 
-3. Create the `messages` table in your MySQL database:
+DOCKER_USERNAME → Your Docker Hub username
 
-   - Use a MySQL client or tool (e.g., phpMyAdmin) to execute the following SQL commands:
-   
-     ```sql
-     CREATE TABLE messages (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    sender_name VARCHAR(255),
-    message_content TEXT
-);
+DOCKER_PASSWORD → Your Docker Hub password
 
-     ```
+SERVER_IP → Your server's IP address
 
-4. Interact with the app:
+SSH_PRIVATE_KEY → Private SSH key for server login
+2️⃣ GitHub Actions Workflow (deploy.yml)
 
-   - Visit http://localhost to see the frontend. You can submit new messages using the form.
-   - Visit http://localhost:5000/insert_sql to insert a message directly into the `messages` table via an SQL query.
 
-## Cleaning Up
-
-To stop and remove the Docker containers, press `Ctrl+C` in the terminal where the containers are running, or use the following command:
-
-```bash
-docker-compose down
-```
-
-## To run this two-tier application using  without docker-compose
-
-- First create a docker image from Dockerfile
-```bash
-docker build -t flaskapp .
-```
-
-- Now, make sure that you have created a network using following command
-```bash
-docker network create twotier
-```
-
-- Attach both the containers in the same network, so that they can communicate with each other
-
-i) MySQL container 
-```bash
-docker run -d \
-    --name mysql \
-    -v mysql-data:/var/lib/mysql \
-    --network=twotier \
-    -e MYSQL_DATABASE=mydb \
-    -e MYSQL_USER=root \
-    -e MYSQL_ROOT_PASSWORD=admin \
-    -p 3306:3306 \
-    mysql:5.7
-
-```
-ii) Backend container
-```bash
-docker run -d \
-    --name flaskapp \
-    --network=twotier \
-    -e MYSQL_HOST=mysql \
-    -e MYSQL_USER=root \
-    -e MYSQL_PASSWORD=admin \
-    -e MYSQL_DB=mydb \
-    -p 5000:5000 \
-    flaskapp:latest
-
-```
-
-## Note
-
-- Make sure to replace placeholders (e.g., `your_username`, `your_password`, `your_database`) with your actual MySQL configuration.
-
-- This is a basic setup for demonstration purposes. In a production environment, you should follow best practices for security and performance.
-
-- Be cautious when executing SQL queries directly. Validate and sanitize user inputs to prevent vulnerabilities like SQL injection.
-
-- If you encounter issues, check Docker logs and error messages for troubleshooting.
-
-```
-
+1️⃣ Store Secrets in GitHub

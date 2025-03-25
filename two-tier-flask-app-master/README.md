@@ -118,7 +118,7 @@ docker run -d \
 
 ```
 
-## Notes
+## Note
 
 - Make sure to replace placeholders (e.g., `your_username`, `your_password`, `your_database`) with your actual MySQL configuration.
 
